@@ -1,30 +1,19 @@
-const express = require('express');
-const app = express();
-const port = 3000;
-
-require('dotenv').config();
-const { Client } = require('discord.js');
-const client = new Client();
-
-app.use(express.static('public'));
-app.use(express.json());
-
-app.post('/send-command', (req, res) => {
-    const { command } = req.body;
-    const channel = client.channels.cache.find(channel => channel.name === 'nom-du-canal');
-    
-    if (channel) {
-        channel.send(command);
-        res.sendStatus(200);
-    } else {
-        res.status(404).send('Canal introuvable.');
-    }
-});
-
-client.login(process.env.DISCORD_TOKEN);
-
-app.listen(port, () => {
-    console.log(`Serveur web démarré sur le port ${port}`);
-});
-
-
+function playAudio(audioFile) {
+    fetch('https://your-glitch-app.glitch.me/play', {  // Remplacez par l'URL de votre app Glitch
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            guildId: 'YOUR_GUILD_ID',  // Remplacez par votre ID de serveur
+            channelId: '1033564536378236958',  // Remplacez par l'ID de votre canal vocal
+            audioFile: audioFile,
+        }),
+    }).then(response => {
+        if (response.ok) {
+            console.log('Audio command sent successfully');
+        } else {
+            console.error('Error sending audio command');
+        }
+    });        
+}
