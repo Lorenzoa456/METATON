@@ -14,10 +14,14 @@ const background = {
   backgroundColor: "#de1523",
 };
 
-const CurrentMusic = () => {
+const CurrentMusic = ({ name, author }) => {
   return (
     <Container sx={background}>
-      <div>CurrentMusic</div>
+      <Box>
+        <Typography variant="h4">Current Music</Typography>
+        <Typography variant="h5">{name}</Typography>
+        <Typography variant="h6">by {author}</Typography>
+      </Box>
     </Container>
   );
 };

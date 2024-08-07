@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CurrentMusic from '../Components/CurrentMusic';
 import MusicList from '../Components/MusicList';
 
@@ -15,23 +15,34 @@ import {
 
 const background = {
   backgroundColor: "#176B87",
-  height: '100vh',
-
+  paddingLeft: "2rem",
+  paddingRight: "2rem",
+  height: "100vh",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center", 
 
 };
 
 const HomePage = () => {
+
+  const [currentMusic, setCurrentMusic] = useState({ name: '', author: '' });
+
+  const handleMusicSelect = (name, author) => {
+    setCurrentMusic({ name, author });
+  };
+
   return (
     <Box sx={background}>
-      <Grid container spacing={3}columns={18}>
+      <Grid container spacing={3}columns={18} sx={{  display: "flex", justifyContent: "center", alignItems: 'center'}}>
         <Grid item xs={8}>
-          <CurrentMusic/>
+          <CurrentMusic name={currentMusic.name} author={currentMusic.author}/>
         </Grid>
         <Grid item xs={2}>
           <div>ESPACE vide</div>
         </Grid>
         <Grid item xs={8}>
-          <MusicList/>
+          <MusicList onMusicSelect={handleMusicSelect}/>
         </Grid>
       </Grid>
     </Box>

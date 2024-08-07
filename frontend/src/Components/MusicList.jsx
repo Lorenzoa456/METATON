@@ -68,11 +68,13 @@ const MusicTextStyle = {
 
 const AuthorTextStyle = {};
 
-const MusicList = () => {
+const MusicList = ({ onMusicSelect }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(null);
-
-  const handleListItemClick = (event, index) => {
+  
+  const handleListItemClick = (event, index, name, author) => {
     setSelectedIndex(index);
+    onMusicSelect(name, author);
+
   };
 
   return (
@@ -84,7 +86,7 @@ const MusicList = () => {
             key={music.id} 
             sx={ListItemStyle}
             selected={selectedIndex === index}
-            onClick={(event) => handleListItemClick(event, index)}
+            onClick={(event) => handleListItemClick(event, index, music.name, music.author)}
           >
             <Box sx={{display: "flex", alignItems: "center", flexGrow: 1}}>
               <AudiotrackIcon sx={{fontSize: "2.5rem", marginRight: "0.5rem"}}/>
