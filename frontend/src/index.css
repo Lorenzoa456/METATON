@@ -16,3 +16,26 @@ body {
   margin: 0;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #a6a0a0; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #ffffff; /* Set the color of the scrollbar thumb */
+  border-radius: 10px; /* Add border radius to the scrollbar thumb */
+  border: 4px solid transparent; /* Add padding around the scrollbar thumb */
+  background-clip: content-box; /* Apply the background color to the content box */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+

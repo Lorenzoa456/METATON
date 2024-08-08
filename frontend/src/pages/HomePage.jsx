@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CurrentMusic from '../Components/CurrentMusic';
-import MusicList from '../Components/MusicList';
+import MusicList from '../Components/MusicList/MusicList';
 
 import {
   Container,
@@ -39,7 +39,6 @@ const HomePage = () => {
           <CurrentMusic name={currentMusic.name} author={currentMusic.author}/>
         </Grid>
         <Grid item xs={2}>
-          <div>ESPACE vide</div>
         </Grid>
         <Grid item xs={8}>
           <MusicList onMusicSelect={handleMusicSelect}/>
