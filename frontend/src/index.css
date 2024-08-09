@@ -3,12 +3,13 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  background-color: #ffffff;
+  background-color: #000000;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: DeterminationMonoWeb,
 
 }
 
@@ -23,7 +24,7 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #a6a0a0; 
+  background: #000000; 
 }
  
 /* Handle */
@@ -38,4 +39,16 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+@font-face {
+  font-family: DeterminationSansWeb;
+  src: url(../public/fonts/DeterminationSansWeb.woff);
+
+}
+
+@font-face {
+  font-family: MonsterFriend2C;
+  src: url(../public/fonts/MonsterFriend2C.otf);
+}
+
 

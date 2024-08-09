@@ -16,21 +16,23 @@ const ListbButtonStyle = {
     flexDirection: "column",
     justifyContent: "center", 
     alignItems: 'center',
-    border: "1px solid #000",
+    border: "1px solid #fff",
     padding: "8px",
     width: "200px",
     marginBottom: "8px",
     borderRadius: "4px",
-    backgroundColor: "#f5a609",
     position: 'relative',
     '&.Mui-selected': {
-      backgroundColor: "#ff7b00", // Change the background color when selected
+      backgroundColor: "#ffffff", // Change the background color when selected
+      color: "#000000",
       '&:hover': {
-        backgroundColor: "#fe9838", // Change the background color on hover
+        backgroundColor: "#ffffff", // Change the background color on hover
+        color: "#000000",
       }
     },
     '&:hover': {
-      backgroundColor: "#f7bc5d", // Change the background color on hover
+      backgroundColor: "#ffffff", // Change the background color on hover
+      color: "#000000",
     }
   };
 
@@ -38,7 +40,7 @@ const AddMusic = () => {
   return (
     <>
     <ListItemButton sx={ListbButtonStyle}>
-        <Typography sx={{}}>
+        <Typography sx={{fontFamily: "DeterminationSansWeb", fontSize: "15px"}}>
             Add Music
         </Typography>
     </ListItemButton>

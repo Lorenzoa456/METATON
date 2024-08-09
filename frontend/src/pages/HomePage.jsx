@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import CurrentMusic from '../Components/CurrentMusic';
 import MusicList from '../Components/MusicList/MusicList';
-
 import {
   Container,
   CssBaseline,
@@ -14,14 +13,14 @@ import {
 } from "@mui/material";
 
 const background = {
-  backgroundColor: "#176B87",
-  paddingLeft: "2rem",
-  paddingRight: "2rem",
+  backgroundColor: "f000000",
+  fontFamily: "8bitoperator-jve",
+  paddingLeft: "1rem", // Réduction de la padding
+  paddingRight: "1rem", // Réduction de la padding
   height: "100vh",
   display: "flex",
   alignItems: "center",
-  justifyContent: "center", 
-
+  justifyContent: "center",
 };
 
 const HomePage = () => {
@@ -33,18 +32,24 @@ const HomePage = () => {
   };
 
   return (
+    <>   
     <Box sx={background}>
-      <Grid container spacing={3}columns={18} sx={{  display: "flex", justifyContent: "center", alignItems: 'center'}}>
-        <Grid item xs={8}>
-          <CurrentMusic name={currentMusic.name} author={currentMusic.author}/>
+      <Grid container spacing={2} columns={18} sx={{ display: "flex", justifyContent: "center", alignItems: 'center'}}>
+        <Grid item xs={18} sx={{ textAlign: "center" }}>
+          <Typography sx={{ fontFamily: "DeterminationSansWeb", fontSize: "7rem" }}>Mettaton BOT</Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={4}>
+          <CurrentMusic name={currentMusic.name} author={currentMusic.author} />
         </Grid>
-        <Grid item xs={8}>
-          <MusicList onMusicSelect={handleMusicSelect}/>
+        <Grid item xs={4} sx={{ display: "flex", justifyContent: "center", alignItems: 'center', marginTop: "4rem" }}>
+          <img src='./public/undertale-mettaton.gif' style={{ maxWidth: "100%", height: "auto" }}></img>
+        </Grid>
+        <Grid item xs={10}>
+          <MusicList onMusicSelect={handleMusicSelect} />
         </Grid>
       </Grid>
     </Box>
+    </>
   );
 };
 

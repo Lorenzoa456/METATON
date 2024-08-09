@@ -58,16 +58,19 @@ const musics = [
 ];
 
 const background = {
-  backgroundColor: "#a6a0a0",
   paddingTop:"1rem",
   paddingBottom:"1rem",
-
+  border: '5px solid white',
+  height: "30rem",
+  width: "30rem",
 };
 
 const TitleStyle = {
   display: "flex",
   justifyContent: "center",
   marginBottom: "16px",
+  fontFamily: "DeterminationSansWeb",
+  fontSize: "30px"
 };
 
 const ListItemStyle = {
@@ -77,24 +80,29 @@ const ListItemStyle = {
   padding: "8px",
   marginBottom: "8px",
   borderRadius: "4px",
-  backgroundColor: "#f5a609",
   position: 'relative',
   '&.Mui-selected': {
-    backgroundColor: "#ff7b00", // Change the background color when selected
+    backgroundColor: "#ffffff", // Change the background color when selected
+    color: "#000000",
     '&:hover': {
-      backgroundColor: "#fe9838", // Change the background color on hover
+      backgroundColor: "#ffffff", // Change the background color on hover
+      color: "#000000",
     }
   },
   '&:hover': {
-    backgroundColor: "#f7bc5d", // Change the background color on hover
+    backgroundColor: "#ffffff", // Change the background color on hover
+    color: "#000000",
   }
 };
 
 const MusicTextStyle = {
-  marginBottom: "-4px"
+  marginBottom: "-4px",
+  fontFamily: "DeterminationSansWeb"
 };
 
-const AuthorTextStyle = {};
+const AuthorTextStyle = {
+  fontFamily: "DeterminationSansWeb"
+};
 
 const MusicList = ({ onMusicSelect }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(null);
@@ -107,7 +115,7 @@ const MusicList = ({ onMusicSelect }) => {
   return (
     <Container sx={background}>
       <Typography sx={TitleStyle}>MusicList</Typography>
-      <Box sx={{ maxHeight: '500px', overflowY: 'auto' }}>
+      <Box sx={{ maxHeight: '325px', overflowY: 'auto',}}>
         <List>
           {musics.map((music, index) => (
             <ListItemButton 
@@ -119,8 +127,8 @@ const MusicList = ({ onMusicSelect }) => {
               <Box sx={{display: "flex", alignItems: "center", flexGrow: 1}}>
                 <AudiotrackIcon sx={{fontSize: "2.5rem", marginRight: "0.5rem"}}/>
                 <Box sx={{display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: 1}}>
-                  <ListItemText primary={music.name} sx={MusicTextStyle}/>
-                  <ListItemText primary={music.author} sx={AuthorTextStyle}/>
+                  <Typography sx={{fontFamily: "DeterminationSansWeb", marginBottom: "-4px", fontSize: "1.5rem"}}>{music.name}</Typography>
+                  <Typography sx={{fontFamily: "DeterminationSansWeb", fontSize: "1.2rem"}}>{music.author}</Typography>
                 </Box>
                 <MoreVertIcon sx={{fontSize: "2rem", position: 'absolute', right: '8px'}}/>
               </Box>
@@ -134,7 +142,7 @@ const MusicList = ({ onMusicSelect }) => {
             color: "#ffffff",
             backgroundColor: "#ffffff",
             height: 5,
-            marginTop: "1rem",
+            marginTop: "0.5rem",
             marginBottom: "0.5rem",
         }}
     />

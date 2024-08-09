@@ -8,10 +8,17 @@ import {
   TextField,
   Button,
   Grid,
+  withTheme,
 } from "@mui/material";
 
 const background = {
-  backgroundColor: "#de1523",
+  border: '5px solid white',
+  backgroundColor: "#ffffff",
+  height: "8rem",
+  width: "23rem",
+  borderRadius: "20px",
+
+
 };
 
 
@@ -19,7 +26,9 @@ const currentMusicStyle = {
   display: "flex", 
   flexDirection: "column",
   justifyContent: "center", 
-  alignItems: 'center'
+  alignItems: 'center',
+  color: "#000000",
+  backgroundColor: "#ffffff"
 }
 
 const CurrentMusic = ({ name, author }) => {
@@ -28,17 +37,16 @@ const CurrentMusic = ({ name, author }) => {
       <Box sx={currentMusicStyle}>
         {name && author && (
           <>
-            <Typography variant="h4">Current Music</Typography>
-            <Typography variant="h5">{name}</Typography>
-            <Typography variant="h6">by {author}</Typography>
+            <Typography variant="h4" sx={{fontFamily: "DeterminationSansWeb"}}>Current Music</Typography>
+            <Typography variant="h5" sx={{fontFamily: "DeterminationSansWeb"}}>{name}</Typography>
+            <Typography variant="h6" sx={{fontFamily: "DeterminationSansWeb"}}>by {author}</Typography>
           </>
         )}
         {!name && !author && (
           <>
-            <Typography variant="h6">Select your music</Typography>
+            <Typography variant="h4" sx={{fontFamily: "DeterminationSansWeb"}}>Select your music</Typography>
           </>
         )}
-
       </Box>
     </Container>
   );
