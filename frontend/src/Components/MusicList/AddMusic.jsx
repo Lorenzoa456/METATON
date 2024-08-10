@@ -9,7 +9,10 @@ import {
   Button,
   ListItemButton,
   Grid,
+
 } from "@mui/material";
+
+import ModalAddMusic from './ModalAddMusic';
 
 const ListbButtonStyle = {
     display: "flex", 
@@ -36,14 +39,22 @@ const ListbButtonStyle = {
     }
   };
 
+
+
 const AddMusic = () => {
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+  
   return (
     <>
-    <ListItemButton sx={ListbButtonStyle}>
+    <ListItemButton sx={ListbButtonStyle} onClick={handleOpen}>
         <Typography sx={{fontFamily: "DeterminationSansWeb", fontSize: "15px"}}>
-            Add Music
+          Add Music
         </Typography>
     </ListItemButton>
+    <ModalAddMusic open={open} handleClose={handleClose} />
     </>
   );
 };
