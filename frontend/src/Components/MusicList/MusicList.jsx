@@ -11,6 +11,7 @@ import {
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddMusic from './AddMusic';
+import UpdateMusic from "./UpdateMusic";
 const musics = [
 {
   id: 0,
@@ -118,21 +119,25 @@ const MusicList = ({ onMusicSelect }) => {
       <Box sx={{ maxHeight: '325px', overflowY: 'auto',}}>
         <List>
           {musics.map((music, index) => (
-            <ListItemButton 
-              key={music.id} 
-              sx={ListItemStyle}
-              selected={selectedIndex === index}
-              onClick={(event) => handleListItemClick(event, index, music.name, music.author)}
-            >
-              <Box sx={{display: "flex", alignItems: "center", flexGrow: 1}}>
-                <AudiotrackIcon sx={{fontSize: "2.5rem", marginRight: "0.5rem"}}/>
-                <Box sx={{display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: 1}}>
-                  <Typography sx={{fontFamily: "DeterminationSansWeb", marginBottom: "-4px", fontSize: "1.5rem"}}>{music.name}</Typography>
-                  <Typography sx={{fontFamily: "DeterminationSansWeb", fontSize: "1.2rem"}}>{music.author}</Typography>
-                </Box>
-                <MoreVertIcon sx={{fontSize: "2rem", position: 'absolute', right: '8px'}}/>
+            <>
+              <Box sx={{display: "flex"}}>
+                <ListItemButton 
+                  key={music.id} 
+                  sx={ListItemStyle}
+                  selected={selectedIndex === index}
+                  onClick={(event) => handleListItemClick(event, index, music.name, music.author)}
+                >
+                  <Box sx={{display: "flex", alignItems: "center", flexGrow: 1}}>
+                    <AudiotrackIcon sx={{fontSize: "2.5rem", marginRight: "0.5rem"}}/>
+                    <Box sx={{display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: 1}}>
+                      <Typography sx={{fontFamily: "DeterminationSansWeb", marginBottom: "-4px", fontSize: "1.5rem"}}>{music.name}</Typography>
+                      <Typography sx={{fontFamily: "DeterminationSansWeb", fontSize: "1.2rem"}}>{music.author}</Typography>
+                    </Box>
+                  </Box>
+                </ListItemButton>
+                <UpdateMusic name={music.name} author={music.author}/>
               </Box>
-            </ListItemButton>
+            </>
           ))}
         </List>
       </Box>
