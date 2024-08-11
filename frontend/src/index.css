@@ -42,13 +42,13 @@ body {
 
 @font-face {
   font-family: DeterminationSansWeb;
-  src: url(../public/fonts/DeterminationSansWeb.woff);
+  src: url(/fonts/DeterminationSansWeb.woff);
 
 }
 
 @font-face {
   font-family: MonsterFriend2C;
-  src: url(../public/fonts/MonsterFriend2C.otf);
+  src: url(/fonts/MonsterFriend2C.otf);
 }
 
 
