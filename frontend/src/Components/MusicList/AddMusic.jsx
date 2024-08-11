@@ -41,22 +41,22 @@ const ListbButtonStyle = {
 
 
 
-const AddMusic = () => {
-
+  const AddMusic = ({ onMusicAdded }) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
   
-  return (
-    <>
-    <ListItemButton sx={ListbButtonStyle} onClick={handleOpen}>
-        <Typography sx={{fontFamily: "DeterminationSansWeb", fontSize: "15px"}}>
-          Add Music
-        </Typography>
-    </ListItemButton>
-    <ModalAddMusic open={open} handleClose={handleClose} />
-    </>
-  );
-};
-
-export default AddMusic;
+    return (
+      <>
+        <ListItemButton sx={ListbButtonStyle} onClick={handleOpen}>
+          <Typography sx={{fontFamily: "DeterminationSansWeb", fontSize: "15px"}}>
+            Add Music
+          </Typography>
+        </ListItemButton>
+        <ModalAddMusic open={open} handleClose={handleClose} onMusicAdded={onMusicAdded} />
+      </>
+    );
+  };
+  
+  export default AddMusic;
+  

@@ -31,18 +31,18 @@ const currentMusicStyle = {
   backgroundColor: "#ffffff"
 }
 
-const CurrentMusic = ({ name, author }) => {
+const CurrentMusic = ({ title, author }) => {
   return (
     <Container sx={background}>
       <Box sx={currentMusicStyle}>
-        {name && author && (
+        {title && author && (
           <>
             <Typography variant="h4" sx={{fontFamily: "DeterminationSansWeb"}}>Current Music</Typography>
-            <Typography variant="h5" sx={{fontFamily: "DeterminationSansWeb"}}>{name}</Typography>
+            <Typography variant="h5" sx={{fontFamily: "DeterminationSansWeb"}}>{title}</Typography>
             <Typography variant="h6" sx={{fontFamily: "DeterminationSansWeb"}}>by {author}</Typography>
           </>
         )}
-        {!name && !author && (
+        {!title && !author && (
           <>
             <Typography variant="h4" sx={{fontFamily: "DeterminationSansWeb"}}>Select your music</Typography>
           </>

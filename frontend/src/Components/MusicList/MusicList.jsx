@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Typography,
@@ -12,51 +12,6 @@ import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddMusic from './AddMusic';
 import UpdateMusic from "./UpdateMusic";
-const musics = [
-{
-  id: 0,
-  name: 'Death by Glamour',
-  author: 'Tobifox',
-},
-  {
-  id: 1,
-  name: 'Show',
-  author: 'ADO',
-}, {
-  id: 2,
-  name: 'Idol',
-  author: 'Yoasobi',
-}, {
-  id: 3,
-  name: 'FightSong',
-  author: 'E ve',
-}, {
-  id: 4,
-  name: 'Hollow Hunger',
-  author: 'Oxt',  
-}, {
-  id: 5,
-  name: 'DATABASE',
-  author: 'MAN WITH A MISSION',
-},{
-  id: 6,
-  name: 'Zoltraak',
-  author: 'Evan Call',
-},{
-  id: 7,
-  name: 'Life Will Change',
-  author: 'Lyn',
-},{
-  id: 8,
-  name: 'Layers',
-  author: 'Hiroyuki Sawano',
-},
-{
-  id: 9,
-  name: 'King',
-  author: 'Kanaria',
-},
-];
 
 const background = {
   paddingTop:"1rem",
@@ -107,11 +62,26 @@ const AuthorTextStyle = {
 
 const MusicList = ({ onMusicSelect }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(null);
-  
-  const handleListItemClick = (event, index, name, author) => {
+  const [musics, setMusics] = useState([]);
+
+  const handleListItemClick = (event, index, title, author) => {
     setSelectedIndex(index);
-    onMusicSelect(name, author);
+    onMusicSelect(title, author);
   };
+
+  const fetchMusics = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/music');
+      const data = await response.json();
+      setMusics(data);
+    } catch (error) {
+      console.error("Error fetching music data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMusics();
+  }, []);
 
   return (
     <Container sx={background}>
@@ -119,39 +89,40 @@ const MusicList = ({ onMusicSelect }) => {
       <Box sx={{ maxHeight: '325px', overflowY: 'auto',}}>
         <List>
           {musics.map((music, index) => (
-            <>
-              <Box sx={{display: "flex"}}>
-                <ListItemButton 
-                  key={music.id} 
-                  sx={ListItemStyle}
-                  selected={selectedIndex === index}
-                  onClick={(event) => handleListItemClick(event, index, music.name, music.author)}
-                >
-                  <Box sx={{display: "flex", alignItems: "center", flexGrow: 1}}>
-                    <AudiotrackIcon sx={{fontSize: "2.5rem", marginRight: "0.5rem"}}/>
-                    <Box sx={{display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: 1}}>
-                      <Typography sx={{fontFamily: "DeterminationSansWeb", marginBottom: "-4px", fontSize: "1.5rem"}}>{music.name}</Typography>
-                      <Typography sx={{fontFamily: "DeterminationSansWeb", fontSize: "1.2rem"}}>{music.author}</Typography>
-                    </Box>
+            <Box key={music.id} sx={{ display: "flex" }}>
+              <ListItemButton 
+                sx={ListItemStyle}
+                selected={selectedIndex === index}
+                onClick={(event) => handleListItemClick(event, index, music.title, music.author)}
+              >
+                <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+                  <AudiotrackIcon sx={{ fontSize: "2.5rem", marginRight: "0.5rem" }}/>
+                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: 1 }}>
+                    <Typography sx={{ fontFamily: "DeterminationSansWeb", marginBottom: "-4px", fontSize: "1.5rem" }}>
+                      {music.title}
+                    </Typography>
+                    <Typography sx={{ fontFamily: "DeterminationSansWeb", fontSize: "1.2rem" }}>
+                      {music.author}
+                    </Typography>
                   </Box>
-                </ListItemButton>
-                <UpdateMusic name={music.name} author={music.author}/>
-              </Box>
-            </>
+                </Box>
+              </ListItemButton>
+              <UpdateMusic name={music.title} author={music.author}/>
+            </Box>
           ))}
         </List>
       </Box>
       <hr
         style={{
-            margin: 0,
-            color: "#ffffff",
-            backgroundColor: "#ffffff",
-            height: 5,
-            marginTop: "0.5rem",
-            marginBottom: "0.5rem",
+          margin: 0,
+          color: "#ffffff",
+          backgroundColor: "#ffffff",
+          height: 5,
+          marginTop: "0.5rem",
+          marginBottom: "0.5rem",
         }}
-    />
-      <AddMusic/>
+      />
+      <AddMusic onMusicAdded={fetchMusics}/> {/* Passez fetchMusics comme prop */}
     </Container>
   );
 };
