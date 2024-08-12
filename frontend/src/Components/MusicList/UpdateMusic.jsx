@@ -31,7 +31,7 @@ const MenuStyle = {
   }
 };
 
-const SearchMusic = ({name, author}) => {
+const UpdateMusic = ({musicData, onMusicUpdated}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isModalOpen, setModalOpen] = React.useState(false);
   
@@ -85,9 +85,9 @@ const SearchMusic = ({name, author}) => {
         <MenuItem onClick={handleClose} sx={MenuItemStyle}>Delete</MenuItem>
       </Menu>
       
-      <ModalUpdateMusic open={isModalOpen} handleClose={handleModalClose} name={name} author={author}/>
+      <ModalUpdateMusic open={isModalOpen} handleClose={handleModalClose} musicData={musicData} onMusicUpdated={onMusicUpdated}/>
     </>
   );
 };
 
-export default SearchMusic;
+export default UpdateMusic;

@@ -107,7 +107,9 @@ const MusicList = ({ onMusicSelect }) => {
                   </Box>
                 </Box>
               </ListItemButton>
-              <UpdateMusic name={music.title} author={music.author}/>
+            <UpdateMusic           
+              musicData={music}
+              onMusicUpdated={fetchMusics}/>
             </Box>
           ))}
         </List>
