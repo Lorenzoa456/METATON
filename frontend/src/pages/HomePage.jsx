@@ -42,7 +42,7 @@ const HomePage = () => {
           <CurrentMusic title={currentMusic.title} author={currentMusic.author} />
         </Grid>
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "center", alignItems: 'center', marginTop: "4rem" }}>
-          <img src='./public/undertale-mettaton.gif' style={{ maxWidth: "100%", height: "auto" }}></img>
+          <img src='/undertale-mettaton.gif' style={{ maxWidth: "100%", height: "auto" }}></img>
         </Grid>
         <Grid item xs={10}>
           <MusicList onMusicSelect={handleMusicSelect} />

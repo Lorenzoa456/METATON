@@ -100,9 +100,12 @@ const ModalAddMusic = ({ open, handleClose, onMusicAdded }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState('');
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    setFileName(selectedFile?.name || '');
   };
 
   const handleSubmit = async (event) => {
@@ -132,6 +135,7 @@ const ModalAddMusic = ({ open, handleClose, onMusicAdded }) => {
       setTitle('');
       setAuthor('');
       setFile(null);
+      setFileName('');
 
       // Fermer le modal
       handleClose();
@@ -175,21 +179,28 @@ const ModalAddMusic = ({ open, handleClose, onMusicAdded }) => {
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
         />
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<AudioFileIcon />}
-          sx={ButtonAddMusic}
-        >
-          Upload file
-          <input
-            type="file"
-            hidden
-            onChange={handleFileChange}
-          />
-        </Button>
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<AudioFileIcon />}
+            sx={ButtonAddMusic}
+          >
+            Upload file
+            <input
+              type="file"
+              hidden
+              onChange={handleFileChange}
+            />
+          </Button>
+          {fileName && (
+            <Typography variant="body2" color="#ffffff" sx={{ marginTop: '8px', fontFamily: "DeterminationSansWeb" }}>
+              {fileName}
+            </Typography>
+          )}
+        </Box>
         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
           <Button
             variant="contained"
