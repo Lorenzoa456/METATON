@@ -6,6 +6,8 @@ import {
   TextField,
   Button,
   Modal,
+  Snackbar,
+  Alert
 } from "@mui/material";
 
 const ModalStyle = {
@@ -102,10 +104,18 @@ const ModalAddMusic = ({ open, handleClose, onMusicAdded }) => {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState('');
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
     setFileName(selectedFile?.name || '');
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   const handleSubmit = async (event) => {
@@ -113,6 +123,9 @@ const ModalAddMusic = ({ open, handleClose, onMusicAdded }) => {
 
     if (!title || !author || !file) {
       console.error('Tous les champs sont requis, y compris le fichier de musique.');
+      setSnackbarMessage('Tous les champs sont requis, y compris le fichier de musique.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
       return;
     }
 
@@ -140,85 +153,105 @@ const ModalAddMusic = ({ open, handleClose, onMusicAdded }) => {
       // Fermer le modal
       handleClose();
 
+      // Afficher le message de succès
+      setSnackbarMessage('Musique ajoutée avec succès !');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+
       // Appeler le callback pour rafraîchir la liste des musiques
       if (onMusicAdded) {
         onMusicAdded();
       }
     } catch (error) {
       console.error('Erreur:', error);
+      setSnackbarMessage('Erreur lors de l\'ajout de la musique');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
-    >
-      <Box sx={ModalStyle}>
-        <Typography id="modal-title" variant="h6" component="h2" fontFamily="DeterminationSansWeb">
-          Add New Music
-        </Typography>
-        <Typography id="modal-description" sx={{ mt: 2 }} fontFamily="DeterminationSansWeb">
-          Here you can add your new music details.
-        </Typography>
-        <TextField
-          fullWidth
-          label="Music Title"
-          variant="outlined"
-          sx={TextFieldStyle}
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <TextField
-          fullWidth
-          label="Artist"
-          variant="outlined"
-          sx={TextFieldStyle}
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        />
-        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<AudioFileIcon />}
-            sx={ButtonAddMusic}
-          >
-            Upload file
-            <input
-              type="file"
-              hidden
-              onChange={handleFileChange}
-            />
-          </Button>
-          {fileName && (
-            <Typography variant="body2" color="#ffffff" sx={{ marginTop: '8px', fontFamily: "DeterminationSansWeb" }}>
-              {fileName}
-            </Typography>
-          )}
+    <>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box sx={ModalStyle}>
+          <Typography id="modal-title" variant="h6" component="h2" fontFamily="DeterminationSansWeb">
+            Add New Music
+          </Typography>
+          <Typography id="modal-description" sx={{ mt: 2 }} fontFamily="DeterminationSansWeb">
+            Here you can add your new music details.
+          </Typography>
+          <TextField
+            fullWidth
+            label="Music Title"
+            variant="outlined"
+            sx={TextFieldStyle}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Artist"
+            variant="outlined"
+            sx={TextFieldStyle}
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+          />
+          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={<AudioFileIcon />}
+              sx={ButtonAddMusic}
+            >
+              Upload file
+              <input
+                type="file"
+                hidden
+                onChange={handleFileChange}
+              />
+            </Button>
+            {fileName && (
+              <Typography variant="body2" color="#ffffff" sx={{ marginTop: '8px', fontFamily: "DeterminationSansWeb" }}>
+                {fileName}
+              </Typography>
+            )}
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <Button
+              variant="contained"
+              sx={ModalButtonStyle}
+              onClick={handleSubmit}
+            >
+              Send Music
+            </Button>
+            <Button
+              variant="contained"
+              sx={ModalButtonStyle}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+          </Box>
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-          <Button
-            variant="contained"
-            sx={ModalButtonStyle}
-            onClick={handleSubmit}
-          >
-            Send Music
-          </Button>
-          <Button
-            variant="contained"
-            sx={ModalButtonStyle}
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-        </Box>
-      </Box>
-    </Modal>
+      </Modal>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

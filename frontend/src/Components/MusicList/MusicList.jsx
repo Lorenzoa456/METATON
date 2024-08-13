@@ -5,17 +5,16 @@ import {
   Box,
   List,
   ListItemButton,
-  ListItemText,
-  Divider,
+  Snackbar,
+  Alert
 } from "@mui/material";
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddMusic from './AddMusic';
 import UpdateMusic from "./UpdateMusic";
 
 const background = {
-  paddingTop:"1rem",
-  paddingBottom:"1rem",
+  paddingTop: "1rem",
+  paddingBottom: "1rem",
   border: '5px solid white',
   height: "30rem",
   width: "30rem",
@@ -63,6 +62,9 @@ const AuthorTextStyle = {
 const MusicList = ({ onMusicSelect }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(null);
   const [musics, setMusics] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const handleListItemClick = (event, index, title, author) => {
     setSelectedIndex(index);
@@ -76,6 +78,9 @@ const MusicList = ({ onMusicSelect }) => {
       setMusics(data);
     } catch (error) {
       console.error("Error fetching music data:", error);
+      setSnackbarMessage('Erreur lors de la récupération des musiques');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
 
@@ -83,20 +88,31 @@ const MusicList = ({ onMusicSelect }) => {
     fetchMusics();
   }, []);
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleMusicUpdate = (message, severity = 'success') => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+    fetchMusics();
+  };
+
   return (
     <Container sx={background}>
       <Typography sx={TitleStyle}>MusicList</Typography>
-      <Box sx={{ maxHeight: '325px', overflowY: 'auto',}}>
+      <Box sx={{ maxHeight: '325px', overflowY: 'auto', }}>
         <List>
           {musics.map((music, index) => (
             <Box key={music.id} sx={{ display: "flex" }}>
-              <ListItemButton 
+              <ListItemButton
                 sx={ListItemStyle}
                 selected={selectedIndex === index}
                 onClick={(event) => handleListItemClick(event, index, music.title, music.author)}
               >
                 <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-                  <AudiotrackIcon sx={{ fontSize: "2.5rem", marginRight: "0.5rem" }}/>
+                  <AudiotrackIcon sx={{ fontSize: "2.5rem", marginRight: "0.5rem" }} />
                   <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: 1 }}>
                     <Typography sx={{ fontFamily: "DeterminationSansWeb", marginBottom: "-4px", fontSize: "1.5rem" }}>
                       {music.title}
@@ -107,9 +123,10 @@ const MusicList = ({ onMusicSelect }) => {
                   </Box>
                 </Box>
               </ListItemButton>
-            <UpdateMusic           
-              musicData={music}
-              onMusicUpdated={fetchMusics}/>
+              <UpdateMusic
+                musicData={music}
+                onMusicUpdated={handleMusicUpdate}
+              />
             </Box>
           ))}
         </List>
@@ -124,7 +141,17 @@ const MusicList = ({ onMusicSelect }) => {
           marginBottom: "0.5rem",
         }}
       />
-      <AddMusic onMusicAdded={fetchMusics}/> {/* Passez fetchMusics comme prop */}
+      <AddMusic onMusicAdded={handleMusicUpdate} />
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
