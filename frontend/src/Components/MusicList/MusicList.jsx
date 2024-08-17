@@ -66,9 +66,9 @@ const MusicList = ({ onMusicSelect }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-  const handleListItemClick = (event, index, title, author) => {
+  const handleListItemClick = (event, index, title, author, music) => {
     setSelectedIndex(index);
-    onMusicSelect(title, author);
+    onMusicSelect(title, author, music);
   };
 
   const fetchMusics = async () => {
@@ -109,7 +109,7 @@ const MusicList = ({ onMusicSelect }) => {
               <ListItemButton
                 sx={ListItemStyle}
                 selected={selectedIndex === index}
-                onClick={(event) => handleListItemClick(event, index, music.title, music.author)}
+                onClick={(event) => handleListItemClick(event, index, music.title, music.author, music.musicFile)}
               >
                 <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
                   <AudiotrackIcon sx={{ fontSize: "2.5rem", marginRight: "0.5rem" }} />

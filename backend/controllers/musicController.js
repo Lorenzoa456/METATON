@@ -86,3 +86,20 @@ export const createMusic = async (req, res) => {
       res.status(500).json({ message: 'Erreur lors de la suppression de la musique', error: error.message });
     }
   };
+
+export const getMusicById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Rechercher la musique par ID
+    const music = await Music.findById(id);
+
+    if (!music) {
+      return res.status(404).json({ message: 'Musique non trouvée' });
+    }
+
+    res.status(200).json(music);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération de la musique', error: error.message });
+  }
+};

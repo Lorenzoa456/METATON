@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllMusic, createMusic, updateMusic, deleteMusic} from '../controllers/musicController.js';
+import { getAllMusic, createMusic, updateMusic, deleteMusic, getMusicById} from '../controllers/musicController.js';
 import multer from 'multer';
 
 const router = Router();
@@ -10,6 +10,7 @@ router.route('/')
     .post(upload.single('musicFile'), createMusic); // Route pour ajouter une nouvelle musique
 
 router.route('/:id')
+    .get(getMusicById) // Obtenir une musique par ID
     .put(upload.single('musicFile'), updateMusic) // Mettre à jour une musique
     .delete(deleteMusic);
 

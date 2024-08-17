@@ -31,7 +31,7 @@ const currentMusicStyle = {
   backgroundColor: "#ffffff"
 }
 
-const CurrentMusic = ({ title, author }) => {
+const CurrentMusic = ({ title, author, music }) => {
   return (
     <Container sx={background}>
       <Box sx={currentMusicStyle}>
