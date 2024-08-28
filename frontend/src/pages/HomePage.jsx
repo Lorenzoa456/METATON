@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CurrentMusic from '../Components/CurrentMusic';
+import CurrentMusic from '../Components/CurrentMusic/CurrentMusic';
 import MusicList from '../Components/MusicList/MusicList';
 import {
   Container,
