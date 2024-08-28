@@ -25,11 +25,10 @@ const background = {
 
 const HomePage = () => {
 
-  const [currentMusic, setCurrentMusic] = useState({ title: '', author: '', music: '' });
+  const [currentMusic, setCurrentMusic] = useState({ title: '', author: ''});
 
-  const handleMusicSelect = (title, author, music) => {
-    setCurrentMusic({ title, author, music});
-    console.log(music)
+  const handleMusicSelect = (title, author) => {
+    setCurrentMusic({ title, author});
 
   };
 
@@ -41,7 +40,7 @@ const HomePage = () => {
           <Typography sx={{ fontFamily: "DeterminationSansWeb", fontSize: "7rem" }}>Mettaton BOT</Typography>
         </Grid>
         <Grid item xs={4}>
-          <CurrentMusic title={currentMusic.title} author={currentMusic.author} music={currentMusic.music}/>
+          <CurrentMusic title={currentMusic.title} author={currentMusic.author}/>
         </Grid>
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "center", alignItems: 'center', marginTop: "4rem" }}>
           <img src='/undertale-mettaton.gif' style={{ maxWidth: "100%", height: "auto" }}></img>

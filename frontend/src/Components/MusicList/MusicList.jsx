@@ -37,15 +37,15 @@ const ListItemStyle = {
   borderRadius: "4px",
   position: 'relative',
   '&.Mui-selected': {
-    backgroundColor: "#ffffff", // Change the background color when selected
+    backgroundColor: "#ffffff",
     color: "#000000",
     '&:hover': {
-      backgroundColor: "#ffffff", // Change the background color on hover
+      backgroundColor: "#ffffff",
       color: "#000000",
     }
   },
   '&:hover': {
-    backgroundColor: "#ffffff", // Change the background color on hover
+    backgroundColor: "#ffffff",
     color: "#000000",
   }
 };
@@ -66,9 +66,40 @@ const MusicList = ({ onMusicSelect }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-  const handleListItemClick = (event, index, title, author, music) => {
+  const handleListItemClick = async (event, index, title, author, id) => {
     setSelectedIndex(index);
-    onMusicSelect(title, author, music);
+    onMusicSelect(title, author);
+
+    // Send the ID to the server
+    await sendMusicIdToServer(id);
+  };
+
+  const sendMusicIdToServer = async (id) => {
+    console.log(id);
+    try {
+      const response = await fetch(`http://localhost:3000/api/music/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('ID sent successfully:', result);
+      } else {
+        console.error('Error sending ID:', response.statusText);
+        setSnackbarMessage('Erreur lors de l’envoi de l’ID de la musique');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+      }
+    } catch (error) {
+      console.error('Error sending ID:', error);
+      setSnackbarMessage('Erreur lors de l’envoi de l’ID de la musique');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    }
   };
 
   const fetchMusics = async () => {
@@ -109,7 +140,7 @@ const MusicList = ({ onMusicSelect }) => {
               <ListItemButton
                 sx={ListItemStyle}
                 selected={selectedIndex === index}
-                onClick={(event) => handleListItemClick(event, index, music.title, music.author, music.musicFile)}
+                onClick={(event) => handleListItemClick(event, index, music.title, music.author, music._id)}
               >
                 <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
                   <AudiotrackIcon sx={{ fontSize: "2.5rem", marginRight: "0.5rem" }} />

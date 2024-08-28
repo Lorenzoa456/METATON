@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   CssBaseline,
@@ -31,7 +31,8 @@ const currentMusicStyle = {
   backgroundColor: "#ffffff"
 }
 
-const CurrentMusic = ({ title, author, music }) => {
+const CurrentMusic = ({ title, author }) => {
+
   return (
     <Container sx={background}>
       <Box sx={currentMusicStyle}>
