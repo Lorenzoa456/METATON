@@ -55,6 +55,8 @@ client.once('ready', () => {
 // Stockage de la connexion vocale du bot pour une gestion facile
 const voiceConnections = new Map();
 
+const audioPlayers = new Map();
+
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return; // Ignorer les messages des autres bots
 
@@ -153,7 +155,31 @@ client.on('messageCreate', async (message) => {
 
     player.play(resource);
     connection.subscribe(player);
+    // Enregistrer le lecteur pour ce serveur
+    audioPlayers.set(message.guild.id, player);
     message.channel.send(`Lecture de ${musicData.title} par ${musicData.author}`);
+  }
+
+  // Commande !pause
+  if (message.content.startsWith('!pause')) {
+    const player = audioPlayers.get(message.guild.id);
+    if (player) {
+      player.pause();
+      message.channel.send("Musique mise en pause.");
+    } else {
+      message.channel.send("Aucune musique n'est en cours de lecture.");
+    }
+  }
+
+  // Commande !resume
+  if (message.content.startsWith('!resume')) {
+    const player = audioPlayers.get(message.guild.id);
+    if (player) {
+      player.unpause();
+      message.channel.send("Musique reprise.");
+    } else {
+      message.channel.send("Aucune musique n'est en cours de lecture.");
+    }
   }
 
   // Commande !leave
