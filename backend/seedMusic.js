@@ -34,7 +34,22 @@ db.once('open', async function() {
         title: "Dramaturgy",
         author: "E ve",
         filePath: "./dumbMusic/Dramaturgy (Eve-mv).mp3"
-      }
+    },
+    {
+      title: "Kono Fuzaketa Subarashiki Sekai wa, Boku no Tame ni Aru",
+      author: "Hatsune Miku (cover : Yuikonnu)",
+      filePath: "./dumbMusic/yuikonnu - Kono Fuzaketa Subarashiki Sekai wa, Boku no Tame ni Aru.mp3"
+    },
+    {
+      title: "Zoltraak",
+      author: "Evan Call",
+      filePath: "./dumbMusic/Zoltraak - Evan Call.mp3"
+    },
+    {
+      title: "Bre@thLess",
+      author: "Sawano Hiroyuki",
+      filePath: "./dumbMusic/Bre@thLess.mp3"
+    }
     // Ajoutez plus de chansons ici
   ];
 

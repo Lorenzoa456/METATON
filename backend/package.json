@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "concurrently \"nodemon server.js\" \"cd .. && cd frontend && npm run dev\""
+    "start": "concurrently \"nodemon index.js\" \"cd .. && cd frontend && npm run dev\""
   },
   "keywords": [],
   "author": "",
@@ -28,9 +28,13 @@
     "npm": "^10.8.2",
     "path": "^0.12.7",
     "router": "^1.3.8",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "sodium-native": "^4.1.1",
     "tmp": "^0.2.3",
-    "tweetnacl": "^1.0.3"
+    "tweetnacl": "^1.0.3",
+    "uuid": "^10.0.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

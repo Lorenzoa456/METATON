@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 import Music from "../schemas/musiqueModel.js"
-import { setCurrentMusic } from '../musicStore.js';
+import { setCurrentMusic, setListMusic, setMusicState } from '../musicStore.js';
 
 export const getAllMusic = async (req, res) => {
     try {
         const musics = await Music.find(); // Récupère toutes les musiques de la base de données
+        setListMusic(musics);
         res.status(200).json(musics); // Retourne les musiques au client avec un statut 200 (OK)
       } catch (error) {
         res.status(500).json({ message: "Erreur lors de la récupération des musiques", error: error.message });
@@ -110,31 +111,59 @@ export const sendMusicId = async (req, res) => {
   console.log(`Received music ID: ${musicId}`);
 
   try {
-    // Rechercher la musique dans la base de données en utilisant l'ID
-    const musicData = await Music.findById(musicId).exec();
+    setCurrentMusic(musicId)
 
-    if (!musicData) {
-      return res.status(404).json({ message: 'Musique non trouvée' });
-    }
+  res.status(200).json({ message: 'Index reçu avec succès', music: musicId });
+} catch (error) {
+  console.error(`Erreur lors de la récupération de l'index ${musicId}:`, error);
+  res.status(500).json({ message: 'Erreur lors de la récupération de la musique', error: error.message });
+}
+};
 
-    // Simuler la récupération du buffer de musique, cela devrait venir de votre champ de données réelles
-    const musicBuffer = musicData.musicFile; // Assurez-vous que ce champ correspond à celui de votre modèle
+export const sendMusicState = async (req, res) => {
+  const musicState = req.body.state; // Utilisez req.body pour les requêtes POST
+  //console.log(musicState);
+  console.log(`Received music state: ${musicState}`);
 
-    // Préparez les données de la musique
-    const responseData = {
-      id: musicData._id,
-      title: musicData.title,
-      author: musicData.author,
-      musicBuffer: musicBuffer,
-    };
-
-    // Stocker la musique dans le module partagé
-    setCurrentMusic(responseData);
-
-    res.status(200).json({ message: 'ID reçu avec succès', music: responseData });
+  try {
+      setMusicState(musicState); // Assurez-vous que cette fonction gère bien un booléen
+      res.status(200).json({ message: 'État reçu avec succès', musicState: musicState });
   } catch (error) {
-    console.error(`Erreur lors de la récupération de la musique avec l'ID ${musicId}:`, error);
-    res.status(500).json({ message: 'Erreur lors de la récupération de la musique', error: error.message });
+      console.error(`Erreur lors de la récupération de l'état ${musicState}:`, error);
+      res.status(500).json({ message: 'Erreur lors de la récupération de la musique', error: error.message });
   }
 };
 
+
+// export const sendMusicId = async (req, res) => {
+//   const musicId = req.params.id;
+//   console.log(`Received music ID: ${musicId}`);
+
+//   try {
+//     // Rechercher la musique dans la base de données en utilisant l'ID
+//     const musicData = await Music.findById(musicId).exec();
+
+//     if (!musicData) {
+//       return res.status(404).json({ message: 'Musique non trouvée' });
+//     }
+
+//     // Simuler la récupération du buffer de musique, cela devrait venir de votre champ de données réelles
+//     const musicBuffer = musicData.musicFile; // Assurez-vous que ce champ correspond à celui de votre modèle
+
+//     // Préparez les données de la musique
+//     const responseData = {
+//       id: musicData._id,
+//       title: musicData.title,
+//       author: musicData.author,
+//       musicBuffer: musicBuffer,
+//     };
+
+//     // Stocker la musique dans le module partagé
+//     setCurrentMusic(responseData);
+
+//     res.status(200).json({ message: 'ID reçu avec succès', music: responseData });
+//   } catch (error) {
+//     console.error(`Erreur lors de la récupération de la musique avec l'ID ${musicId}:`, error);
+//     res.status(500).json({ message: 'Erreur lors de la récupération de la musique', error: error.message });
+//   }
+// };

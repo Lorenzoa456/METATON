@@ -71,7 +71,7 @@ const MusicList = ({ onMusicSelect }) => {
     onMusicSelect(title, author);
 
     // Send the ID to the server
-    await sendMusicIdToServer(id);
+    await sendMusicIdToServer(index);
   };
 
   const sendMusicIdToServer = async (id) => {
