@@ -11,6 +11,9 @@ import {
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import AddMusic from './AddMusic';
 import UpdateMusic from "./UpdateMusic";
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3000'); // Remplacez par l'URL de votre serveur si nécessaire
 
 const background = {
   paddingTop: "1rem",
@@ -87,6 +90,7 @@ const MusicList = ({ onMusicSelect }) => {
 
       if (response.ok) {
         const result = await response.json();
+        socket.emit('changeMusic');
         console.log('ID sent successfully:', result);
       } else {
         console.error('Error sending ID:', response.statusText);
@@ -117,6 +121,9 @@ const MusicList = ({ onMusicSelect }) => {
 
   useEffect(() => {
     fetchMusics();
+    socket.on('connect', () => {
+      console.log('Connected to the server');
+    });
   }, []);
 
   const handleSnackbarClose = () => {

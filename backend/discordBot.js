@@ -2,7 +2,7 @@ import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { joinVoiceChannel, createAudioPlayer, createAudioResource, VoiceConnectionStatus } from '@discordjs/voice';
 import fs from 'fs';
 import dotenv from 'dotenv';
-import { getCurrentMusic, getListMusic } from './musicStore.js';
+import { getCurrentMusic, getListMusic, setCurrentMusic } from './musicStore.js';
 import { io } from 'socket.io-client';
 
 dotenv.config();
@@ -38,13 +38,37 @@ client.once('ready', () => {
   });
 
   socket.on("startMusic", () => {
-    handleStartMusic();
+    if (idGuild) {
+      handleStartMusic();
+    }
+  });
+
+  socket.on("changeMusic", () => {
+    if (idGuild) {
+      handleChange();
+    }
   });
 
   socket.on("pauseMusic", () => {
-    handlePauseMusic();
+    if (idGuild) {
+      handlePauseMusic();
+    }
+  });
+
+  socket.on("nextMusic", (add) => {
+    if (idGuild) {
+      handleNextMusic(add)
+    }
+  });
+  
+  socket.on("previousMusic", (add) => {
+    if (idGuild) {
+      handleNextMusic(add)
+    }
   });
 });
+
+
 
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
@@ -77,14 +101,6 @@ client.on('messageCreate', async (message) => {
       voiceConnections.delete(message.guild.id);
     });
   }
-
-  // if (message.content.startsWith('!pause')) {
-  //   handlePauseMusic(message.guild.id, message.channel);
-  // }
-
-  // if (message.content.startsWith('!resume')) {
-  //   handleResumeMusic(message.guild.id, message.channel);
-  // }
 
   if (message.content.startsWith('!leave')) {
     const guildData = voiceConnections.get(message.guild.id);
@@ -141,15 +157,80 @@ function handlePauseMusic() {
   }
 }
 
-function handleResumeMusic() {
-  const player = audioPlayers.get(idGuild);
+function handleChange() {
+  //console.log(idGuild)
   const guildData = voiceConnections.get(idGuild);
-  
+  if (!guildData?.connection) {
+    console.log("Le bot n'est pas dans un canal vocal. Utilisez !join ou !summon pour le faire rejoindre.");
+    return;
+  }
+
+  let player = audioPlayers.get(idGuild);
   if (player) {
-    player.unpause();
-    guildData.textChannel.send('Musique reprise.');
-  } else {
-    guildData.textChannel.send("Aucune musique n'est en cours de lecture.");
+    player.stop();
+
+    const musicIndex = getCurrentMusic();
+    const listMusicData = getListMusic();
+    const currentMusic = Buffer.from(listMusicData[musicIndex].musicFile.data.buffer);
+    const filePath = 'readMusic.mp3';
+
+    fs.writeFileSync(filePath, currentMusic);
+    console.log('Fichier MP3 créé avec succès !');
+
+    player = createAudioPlayer();
+    const resource = createAudioResource(filePath);
+    player.play(resource);
+    guildData.connection.subscribe(player);
+
+    audioPlayers.set(idGuild, player);
+    guildData.textChannel.send(`Lecture de ${listMusicData[musicIndex].title} par ${listMusicData[musicIndex].author}`);
+  }
+}
+
+function handleNextMusic(add) {
+  //console.log(`parameter : ${add}`)
+  const guildData = voiceConnections.get(idGuild);
+  if (!guildData?.connection) {
+    console.log("Le bot n'est pas dans un canal vocal. Utilisez !join ou !summon pour le faire rejoindre.");
+    return;
+  }
+
+  let player = audioPlayers.get(idGuild);
+  if (player) {
+    player.stop();
+
+    const musicIndex = getCurrentMusic();
+    console.log(`orignal Music Index: ${musicIndex}`)
+    const listMusicData = getListMusic();
+
+    if (musicIndex == 0 && parseInt(add) < 0) {
+      setCurrentMusic(listMusicData.length -1)
+    }
+
+    else if (musicIndex == listMusicData.length -1 && parseInt(add) >= 1){
+      setCurrentMusic(0)
+    }
+    else {
+      setCurrentMusic(parseInt(musicIndex) + parseInt(add))
+    }
+
+    const newMusicIndex = getCurrentMusic();
+    console.log(`new Music Index: ${newMusicIndex}`)
+    // console.log(listMusicData[newMusicIndex])
+    const currentMusic = Buffer.from(listMusicData[newMusicIndex].musicFile.data.buffer);
+    const filePath = 'readMusic.mp3';
+
+    fs.writeFileSync(filePath, currentMusic);
+    console.log('Fichier MP3 créé avec succès !');
+
+    player = createAudioPlayer();
+    const resource = createAudioResource(filePath);
+    player.play(resource);
+    guildData.connection.subscribe(player);
+
+    audioPlayers.set(idGuild, player);
+    guildData.textChannel.send(`On passe à la prochaine/précédente musique de la liste`);
+    guildData.textChannel.send(`Lecture de ${listMusicData[newMusicIndex].title} par ${listMusicData[newMusicIndex].author}`);
   }
 }
 

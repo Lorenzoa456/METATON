@@ -1,4 +1,4 @@
-let currentMusic = {};
+let currentMusic = 0;
 let listMusic= {};
 let musicState= false;
 

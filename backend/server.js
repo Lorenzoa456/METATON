@@ -32,12 +32,27 @@ io.on("connection", (socket) => {
   socket.on("startMusic", () => {
     console.log("Received startMusic command");
     io.emit("startMusic");  // Émettre cet événement à tous les clients
+  }); 
+
+  socket.on("changeMusic", () => {
+    console.log("choose Music command");
+    io.emit("changeMusic");  // Émettre cet événement à tous les clients
   });
 
   // Quand le client envoie une commande pour mettre en pause la musique
   socket.on("pauseMusic", () => {
     console.log("Received pauseMusic command");
     io.emit("pauseMusic");  // Émettre cet événement à tous les clients
+  });
+
+  socket.on("nextMusic", (add) => {
+    console.log("Next Music command");
+    io.emit("nextMusic", add);  // Émettre cet événement à tous les clients
+  });
+
+  socket.on("previousMusic", (add) => {
+    console.log("Previous Music command");
+    io.emit("previousMusic", add);  // Émettre cet événement à tous les clients
   });
 
   socket.on("disconnect", () => {

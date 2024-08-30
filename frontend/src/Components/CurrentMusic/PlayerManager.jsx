@@ -56,11 +56,20 @@ const PlayerManager = () => {
     }
   };
 
+  const handleButtonNext= async () => {
+    socket.emit('nextMusic', 1);
+    console.log('Next music');
+  }
+
+  const handleButtonPrevious = async () => {
+    socket.emit('previousMusic', -1);
+    console.log('Previous music');
+  }
 
 
   return (
     <Box>
-      <Button sx={buttonStyle}>
+      <Button sx={buttonStyle} onClick={handleButtonPrevious}>
         <SkipPreviousIcon sx={{ fontSize: "2.5rem" }} />
       </Button>
       {buttonState && (
@@ -73,7 +82,7 @@ const PlayerManager = () => {
         <PauseCircleIcon sx={{ fontSize: "2.5rem" }} />
         </Button>
       )}
-      <Button sx={buttonStyle}>
+      <Button sx={buttonStyle} onClick={handleButtonNext}>
         <SkipNextIcon sx={{ fontSize: "2.5rem" }} />
       </Button>
     </Box>
