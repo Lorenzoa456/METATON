@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { getCurrentMusic, getListMusic, setCurrentMusic } from './musicStore.js';
 import { io } from 'socket.io-client';
 import { musicEmbed } from './embedMessage.js';
+import { Socket } from 'socket.io';
 
 
 dotenv.config();
@@ -26,10 +27,7 @@ const voiceConnections = new Map();
 const audioPlayers = new Map();
 let idGuild = null;
 
-client.once('ready', () => {
-  console.log(`Bot connecté en tant que ${client.user.tag}`);
-  
-  const socket = io(SOCKET_IO_SERVER_URL);
+const socket = io(SOCKET_IO_SERVER_URL);
   
   socket.on('connect', () => {
     console.log('Bot connecté au serveur Socket.IO');
@@ -68,6 +66,11 @@ client.once('ready', () => {
       handleNextMusic(add)
     }
   });
+
+client.once('ready', () => {
+  console.log(`Bot connecté en tant que ${client.user.tag}`);
+  
+  
 });
 
 
@@ -233,10 +236,10 @@ function handleNextMusic(add) {
     const resource = createAudioResource(filePath);
     player.play(resource);
     guildData.connection.subscribe(player);
-
     audioPlayers.set(idGuild, player);
+    socket.emit("currentMusicInfo", {"title" : listMusicData[newMusicIndex].title, "author" :listMusicData[newMusicIndex].author})
     guildData.textChannel.send(`On passe à la prochaine/précédente musique de la liste`);
-    guildData.textChannel.send(`Musique actuel`);
+    guildData.textChannel.send(`Musique actuel`,);
     musicEmbed.setTitle(listMusicData[newMusicIndex].title).setDescription(listMusicData[newMusicIndex].author)
     guildData.textChannel.send({embeds : [musicEmbed], files: ["mettatonEX-dance.gif"]});
   }

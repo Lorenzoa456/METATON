@@ -41,7 +41,6 @@ const PlayerManager = () => {
     });
   }, []);
 
-  
 
   const handleButton = async () => {
     setButtonState(!buttonState);  // Correctement mettre à jour l'état
