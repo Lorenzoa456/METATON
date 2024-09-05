@@ -4,6 +4,8 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import { getCurrentMusic, getListMusic, setCurrentMusic } from './musicStore.js';
 import { io } from 'socket.io-client';
+import { musicEmbed } from './embedMessage.js';
+
 
 dotenv.config();
 
@@ -141,7 +143,9 @@ function handleStartMusic() {
     guildData.connection.subscribe(player);
 
     audioPlayers.set(idGuild, player);
-    guildData.textChannel.send(`Lecture de ${listMusicData[musicIndex].title} par ${listMusicData[musicIndex].author}`);
+    guildData.textChannel.send(`Musique actuel`);
+    musicEmbed.setTitle(listMusicData[musicIndex].title).setDescription(listMusicData[musicIndex].author)
+    guildData.textChannel.send({embeds : [musicEmbed], files: ["mettatonEX-dance.gif"]});
   }
 }
 
@@ -183,7 +187,9 @@ function handleChange() {
     guildData.connection.subscribe(player);
 
     audioPlayers.set(idGuild, player);
-    guildData.textChannel.send(`Lecture de ${listMusicData[musicIndex].title} par ${listMusicData[musicIndex].author}`);
+    guildData.textChannel.send(`Musique actuel`);
+    musicEmbed.setTitle(listMusicData[musicIndex].title).setDescription(listMusicData[musicIndex].author)
+    guildData.textChannel.send({embeds : [musicEmbed], files: ["mettatonEX-dance.gif"]});
   }
 }
 
@@ -230,7 +236,9 @@ function handleNextMusic(add) {
 
     audioPlayers.set(idGuild, player);
     guildData.textChannel.send(`On passe à la prochaine/précédente musique de la liste`);
-    guildData.textChannel.send(`Lecture de ${listMusicData[newMusicIndex].title} par ${listMusicData[newMusicIndex].author}`);
+    guildData.textChannel.send(`Musique actuel`);
+    musicEmbed.setTitle(listMusicData[newMusicIndex].title).setDescription(listMusicData[newMusicIndex].author)
+    guildData.textChannel.send({embeds : [musicEmbed], files: ["mettatonEX-dance.gif"]});
   }
 }
 
