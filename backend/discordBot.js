@@ -237,7 +237,8 @@ function handleNextMusic(add) {
     player.play(resource);
     guildData.connection.subscribe(player);
     audioPlayers.set(idGuild, player);
-    socket.emit("currentMusicInfo", {"title" : listMusicData[newMusicIndex].title, "author" :listMusicData[newMusicIndex].author})
+    socket.emit("currentMusicInfo", {"title" : listMusicData[newMusicIndex].title, "author" :listMusicData[newMusicIndex].author});
+    socket.emit("currentIndex", newMusicIndex);
     guildData.textChannel.send(`On passe à la prochaine/précédente musique de la liste`);
     guildData.textChannel.send(`Musique actuel`,);
     musicEmbed.setTitle(listMusicData[newMusicIndex].title).setDescription(listMusicData[newMusicIndex].author)

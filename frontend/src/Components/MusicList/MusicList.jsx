@@ -126,6 +126,14 @@ const MusicList = ({ onMusicSelect }) => {
     });
   }, []);
 
+  socket.on('currentIndex', (currentIndex) => {
+    setSelectedIndex(currentIndex)
+    console.log(currentIndex);
+  });
+  useEffect(() => {
+
+  }, []);
+
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };

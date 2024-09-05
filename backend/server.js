@@ -55,14 +55,19 @@ io.on("connection", (socket) => {
     io.emit("previousMusic", add);  // Émettre cet événement à tous les clients
   });
   socket.on("currentMusicInfo", (musicInfo) => {
-    console.log(musicInfo)
-    //console.log("Update current music info in webUI" + musicTitle + " " + musicAuthor);
+    console.log("Update current music info in webUI" + musicInfo.title + " " + musicInfo.author);
     io.emit("currentMusicInfo", musicInfo);  // Émettre cet événement à tous les clients
+  });
+  socket.on("currentIndex", (currentIndex) => {
+    console.log("current index : ",currentIndex)
+    io.emit("currentIndex", currentIndex);  // Émettre cet événement à tous les clients
   });
 
   socket.on("disconnect", () => {
     console.log("Client disconnected");
   });
+
+  
 });
 
 try {
