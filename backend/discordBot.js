@@ -107,6 +107,47 @@ client.on('messageCreate', async (message) => {
     });
   }
 
+  if (message.content.startsWith('!summon')) {
+    const args = message.content.split(' ').slice(1);
+    console.log("argument : ", args)
+    const channelName = args.join(' ');
+
+    if (!channelName) {
+      message.channel.send("Veuillez spécifier un nom de canal vocal. Exemple: `!summon <nom_du_channel>`");
+      return;
+    }
+
+    const voiceChannel = message.guild.channels.cache.find(
+      (channel) => channel.type === 2 && channel.name.toLowerCase() === channelName.toLowerCase()
+    );
+
+    if (!voiceChannel) {
+      message.channel.send(`Le canal vocal '${channelName}' est introuvable.`);
+      return;
+    }
+
+    const existingConnection = voiceConnections.get(message.guild.id);
+    if (existingConnection) {
+      existingConnection.connection.destroy();
+    }
+
+    const connection = joinVoiceChannel({
+      channelId: voiceChannel.id,
+      guildId: message.guild.id,
+      adapterCreator: message.guild.voiceAdapterCreator,
+    });
+
+    connection.on(VoiceConnectionStatus.Ready, () => {
+      voiceConnections.set(message.guild.id, { connection, textChannel: message.channel });
+      idGuild = message.guild.id;
+      message.channel.send(`Bot connecté au canal vocal '${voiceChannel.name}'.`);
+    });
+
+    connection.on(VoiceConnectionStatus.Disconnected, () => {
+      voiceConnections.delete(message.guild.id);
+    });
+  }
+
   if (message.content.startsWith('!leave')) {
     const guildData = voiceConnections.get(message.guild.id);
     if (guildData?.connection) {
