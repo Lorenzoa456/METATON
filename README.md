@@ -1,9 +1,9 @@
 #   PROJET BOT MUSICAL   #
 ## Table des matières
 
-- [Prérequis](Prérequis)
-- [Installation](Installation)
-- [Features](Features)
+- [Prérequis](#Prérequis)
+- [Installation](#Installation)
+- [Features](#Features)
 
 ## Prérequis
 
