@@ -2,7 +2,7 @@
 ## Table des matières
 
 - [Prérequis](#Prérequis)
-- [Installation](#Installation)
+- [Installation](#Installation%20et%20déploiment)
 - [Features](#Features)
 
 ## Prérequis
